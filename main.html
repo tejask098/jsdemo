@@ -1,0 +1,461 @@
+<body>
+  <!DOCTYPE html>
+  <html>
+
+  <head>
+    <title>Demo </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <table class="table table-striped ">
+      <thead>
+        <tr>
+          <th>
+            <input type="text" class="form-control" placeholder="Search name" name="search"
+              oninput="searchFun(this.value)">
+          </th>
+          <th><button type="button" class="btn btn-primary" name="search-button" onclick="searchFun()">Search</button>
+          </th><th></th><th></th><th></th><th></th><th></th><th></th>
+          <th><select name="sort" class="form-select" aria-label="-select-" onchange="sortTable(this.value) ">
+              <option value="" disabled selected hidden>-sort-</option>
+              <option value="asc" value="asc">Ascending</option>
+              <option value="dsc" value="dsc">Descending</option>
+            </select></th>
+        </tr>
+        <tr>
+          <th class="text-center">Name</th>
+          <th class="text-center">Email</th>
+          <th class="text-center">Gender</th>
+          <th class="text-center">Hobbies</th>
+          <th class="text-center">Age</th>
+          <th class="text-center">State</th>
+          <th class="text-center">City</th>
+          <th class="text-center">Created Time</th>
+          <th class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+    <div class="container mt-3">
+      <form class="form-horizontal">
+        <table class="table border">
+          <tr>
+            <div class="control-label col-1 mb-3 mt-3">
+              <td class="text-center py-3">Name</td>
+              <td>
+                <input type="text" class="form-control" name="name">
+                <p name="name-v" class="valid-feedback"></p>
+              </td>
+            </div>
+          </tr>
+          <tr>
+            <div class="mb-3 mt-3">
+              <td class="text-center py-3">Email</td>
+              <td>
+                <input type="email" class="form-control" name="email">
+                <p name="email-v" class="valid-feedback"></p>
+              </td>
+            </div>
+          </tr>
+          <tr>
+            <div class="mb-3 mt-3">
+              <td class="text-center py-3">Gender</td>
+              <td>
+                <div class="form-control">
+                  <input type="radio" name="gender" value="Male"> Male
+                  &nbsp;
+                  <input type="radio" name="gender" value="Female"> Female
+                </div>
+                <p name="gender-v" class="valid-feedback"></p>
+              </td>
+
+            </div>
+          </tr>
+          <tr>
+            <div class="mb-3 mt-3">
+              <td class="text-center py-3">Hobbies </td>
+              <td>
+                <div class="form-control">
+                  <label class="form-check-label">
+                    <input type="checkbox" name="hobbies" value="Reading"> Reading
+                    &nbsp;
+                    <input type="checkbox" name="hobbies" value="Travelling"> Travelling
+                    &nbsp;
+                    <input type="checkbox" name="hobbies" value="Sports"> Sports
+                  </label>
+                </div>
+                <p name="hobbies-v" class="valid-feedback"></p>
+              </td>
+            </div>
+    </div>
+    </tr>
+    <tr>
+      <div class="mb-3 mt-3">
+        <td class="text-center py-3">Age</td>
+        <td>
+          <input type="number" class="form-control" name="age">
+          <p name="age-v" class="valid-feedback"></p>
+        </td>
+      </div>
+    </tr>
+    <tr>
+      <div class="mb-3 mt-3">
+        <td class="text-center py-3">State</td>
+        <td>
+          <select name="state-select" class="form-select" aria-label="-select-" onchange="populateCities(this.value)">
+            <option value="" disabled selected hidden>-select-</option>
+          </select>
+          <p name="state-v" class="valid-feedback"></p>
+        </td>
+      </div>
+    </tr>
+    <tr>
+      <div class="mb-3 mt-3">
+        <td class="text-center py-3">City</td>
+        <td>
+          <select name="city-select" class="form-select" aria-label="-select-">
+            <option value="" disabled selected hidden>-select-</option>
+          </select>
+          <p name="city-v" class="valid-feedback"></p>
+        </td>
+      </div>
+    </tr>
+    <tr>
+      <div class="mb-3 mt-3">
+        <td class="text-center py-3">Action</td>
+        <td>
+          <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+          <button type="button" class="btn btn-secondary" onclick="updateForm()" style="display: none;">Update</button>
+          <button type="button" class="btn btn-warning" onclick="cancelForm()" style="display: none;">Cancel</button>
+        </td>
+      </div>
+    </tr>
+    </table><br><br>
+    </form>
+    </div>
+
+    <script>
+
+      var nameInput = document.querySelector('input[name="name"]');
+      var emailInput = document.querySelector('input[name="email"]');
+      var genderInputs = document.querySelectorAll('input[name="gender"]');
+      var hobbiesInputs = document.querySelectorAll('input[name="hobbies"]');
+      var ageInput = document.querySelector('input[name="age"]');
+      var stateSelect = document.querySelector('select[name="state-select"]');
+      var citySelect = document.querySelector('select[name="city-select"]');
+      var updateButton = document.querySelector('button[type="button"][onclick="updateForm()"]');
+      var cancelButton = document.querySelector('button[type="button"][onclick="cancelForm()"]');
+      var submitButton = document.querySelector('button[type="button"][onclick="submitForm()"]');
+      var nameV = document.querySelector('p[name="name-v"]');
+      var emailV = document.querySelector('p[name="email-v"]');
+      var genderV = document.querySelector('p[name="gender-v"]');
+      var hobbiesV = document.querySelector('p[name="hobbies-v"]');
+      var ageV = document.querySelector('p[name="age-v"]');
+      var stateV = document.querySelector('p[name="state-v"]');
+      var cityV = document.querySelector('p[name="city-v"]');
+
+      var data = [
+        {
+          name: "Tejas",
+          email: "tejaskarena987@gmail.com",
+          gender: "Male",
+          hobbies: ["Travelling", "Reading"],
+          age: 23,
+          state: "Gujarat",
+          city: "Porbandar",
+          createdTime: "30/05/2023, 15:36:32",
+        },
+        {
+          name: "Rajesh",
+          email: "rajesh@gmail.com",
+          gender: "Male",
+          hobbies: ["Reading", "Travelling", "Sports"],
+          age: 25,
+          state: "Gujarat",
+          city: "Rajkot",
+          createdTime: "30/05/2023, 15:36:32",
+        },
+      ];
+
+      const STATECITIES = {
+        Gujarat: ["Porbandar", "Surat", "Rajkot", "Valsad"],
+        UP: ["Vastral", "Gorakhpur"],
+        MP: ["Bhopal", "Pratapgadh", "Maninagar"],
+        Assam: ["Impal", "Guwahati"],
+        Rajsthan: ["Mahinagar", "Jaipur", "Udaypur"],
+        Maharashtra: ["Mumbai", "Pune"],
+      };
+
+      const DROPDOWN = {
+        state: document.querySelector('select[name="state-select"]'),
+        city: document.querySelector('select[name="city-select"]'),
+      };
+
+      for (var state in STATECITIES) {
+        var option = document.createElement("option");
+        option.value = state;
+        option.textContent = state;
+        DROPDOWN.state.appendChild(option);
+      }
+
+      function populateCities(selectedState) {
+        var cityDropdown = DROPDOWN.city;
+        cityDropdown.innerHTML = "";
+        var cities = STATECITIES[selectedState];
+        var option = document.createElement("option");
+        option.value = "";
+        option.textContent = "-select-";
+        option.hasOwnProperty = "disabled selected hidden"
+        cityDropdown.appendChild(option);
+
+        cities.forEach(function (city) {
+          var option = document.createElement("option");
+          option.value = city;
+          option.textContent = city;
+          cityDropdown.appendChild(option);
+        });
+      }
+
+      function populateTable(filteredData) {
+        var tbody = document.querySelector("tbody");
+        tbody.innerHTML = "";
+        var tableData = filteredData || data;
+
+        tableData.forEach(function (item, index) {
+          var tr = document.createElement("tr");
+          var editButton = document.createElement("button");
+          var deleteButton = document.createElement("button");
+          
+
+          for (var key in item) {
+            if (item.hasOwnProperty(key)) {
+              var td = document.createElement("td");
+              td.className = "text-center"
+              if (key == "hobbies") {
+                td.textContent = item[key].join(",");
+              } else {
+                td.textContent = item[key];
+              }
+              tr.appendChild(td);
+            }
+          }
+
+          var td = document.createElement("td");
+          var div = document.createElement("div");
+          td.className = "text-center align-middle"
+          div.className = "btn-group "
+
+          editButton.textContent = "Edit";
+          editButton.addEventListener("click", function () { editForm(index); });
+          editButton.className = " btn btn-secondary btn btn-info";
+          editButton.style = "color:black";
+          div.appendChild(editButton);
+          deleteButton.textContent = "Delete";
+          deleteButton.addEventListener("click", function () { deleteRow(index); });
+          deleteButton.className = "btn btn-secondary btn btn-danger";
+          deleteButton.style = "color:black";
+          div.appendChild(deleteButton);
+
+          td.appendChild(div)
+          tr.appendChild(td)
+
+          tbody.appendChild(tr);
+          nameInput.value = "";
+          emailInput.value = "";
+          genderInputs.forEach((input) => (input.checked = false));
+          hobbiesInputs.forEach((input) => (input.checked = false));
+          ageInput.value = "";
+          stateSelect.value = "";
+          citySelect.innerHTML = "";
+        });
+
+      }
+
+      function submitForm() {
+        var hobbiesInputs = document.querySelectorAll('input[name="hobbies"]:checked');
+        var name = nameInput.value;
+        var email = emailInput.value;
+        var gender = Array.from(genderInputs).find((input) => input.checked)?.value;
+        var hobbies = Array.from(hobbiesInputs).map((input) => input.value);
+        var age = parseInt(ageInput.value);
+        var state = stateSelect.value;
+        var city = citySelect.value;
+        var createdTime = new Date().toLocaleString();
+
+        var newData = {
+          name: name,
+          email: email,
+          gender: gender,
+          hobbies: hobbies,
+          age: age,
+          state: state,
+          city: city,
+          createdTime: createdTime,
+        };
+
+        if (valCheck(newData)) {
+          data.push(newData);
+
+          populateTable();
+        }
+      }
+
+      function editForm(index) {
+        currentEditIndex = index;
+        var row = data[index];
+
+        nameInput.value = row.name;
+        emailInput.value = row.email;
+        genderInputs.forEach((input) => (input.checked = input.value == row.gender));
+        hobbiesInputs.forEach((input) => (input.checked = row.hobbies.includes(input.value)));
+        ageInput.value = row.age;
+        stateSelect.value = row.state;
+        populateCities(row.state);
+        citySelect.value = row.city;
+
+        submitButton.style.display = "none";
+        updateButton.style.display = "inline-block";
+        cancelButton.style.display = "inline-block";
+        valCheck(row);
+      }
+
+      function updateForm() {
+        var hobbiesInputs = document.querySelectorAll('input[name="hobbies"]:checked');
+        var name = nameInput.value;
+        var email = emailInput.value;
+        var gender = Array.from(genderInputs).find((input) => input.checked).value;
+        var hobbies = Array.from(hobbiesInputs).map((input) => input.value);
+        var age = parseInt(ageInput.value);
+        var state = stateSelect.value;
+        var city = citySelect.value;
+
+        var updatedData = {
+          name: name,
+          email: email,
+          gender: gender,
+          hobbies: hobbies,
+          age: age,
+          state: state,
+          city: city,
+          createdTime: data[currentEditIndex].createdTime,
+        };
+        if (valCheck(updatedData)) {
+          data[currentEditIndex] = updatedData;
+
+          populateTable();
+
+          updateButton.style.display = "none";
+          cancelButton.style.display = "none";
+          submitButton.style.display = "inline-block";
+
+        }
+      }
+
+      function cancelForm() {
+
+        populateTable();
+
+        updateButton.style.display = "none";
+        cancelButton.style.display = "none";
+        submitButton.style.display = "inline-block";
+      }
+
+      function deleteRow(index) {
+        data.splice(index, 1);
+        populateTable();
+      }
+
+      populateTable();
+
+      function valCheck(newData) {
+        var isValid = true;
+
+        if (newData.name.length < 2) {
+          displayError(nameV, 'Name must be at least 2 characters long');
+          isValid = false;
+        } else { nameV.innerHTML = ''; }
+
+        if (!newData.email.includes('@')) {
+          displayError(emailV, 'Invalid email address');
+          isValid = false;
+        } else { emailV.innerHTML = ''; }
+
+        if (newData.gender === undefined) {
+          displayError(genderV, 'Please select a gender');
+          isValid = false;
+        } else { genderV.innerHTML = ''; }
+
+        if (newData.hobbies.length == 0) {
+          displayError(hobbiesV, 'Please select at least one hobby');
+          isValid = false;
+        } else { hobbiesV.innerHTML = ''; }
+
+        if (isNaN(newData.age)) {
+          displayError(ageV, 'Please Enter Age');
+          isValid = false;
+        } else { ageV.innerHTML = ''; }
+
+        if (newData.state == '') {
+          displayError(stateV, 'Please select a state');
+          isValid = false;
+        } else { stateV.innerHTML = ''; }
+
+        if (newData.city == '') {
+          displayError(cityV, 'Please select a city');
+          isValid = false;
+        } else { cityV.innerHTML = ''; }
+        return isValid
+      }
+
+      function displayError(x, msg, color = 'red') {
+        x.innerHTML = msg;
+        x.style.color = color;
+        x.style.display = 'block';
+      }
+
+      function searchFun(name) {
+        var sname = name.toLowerCase()
+        var filteredData = []
+        for (let i = 0; i < data.length; i++) {
+          var person = data[i]
+          var dataName = data[i].name.toLocaleLowerCase()
+          if (dataName.includes(sname)) {
+            filteredData.push(person);
+          }
+        }
+        populateTable(filteredData);
+      }
+
+      function sortTable(order) {
+        if (order == "asc") {
+          data.sort(function (a, b) {
+            if (a.name < b.name) {
+              return -1;
+              if (a.name > b.name) {
+                return 1;
+              }
+              return 0;
+            }
+          });
+        } else if (order == "dsc") {
+          data.sort(function (a, b) {
+            if (b.name < a.name) {
+              return -1;
+              if (b.name > a.name) {
+                return 1;
+              }
+              return 0;
+            }
+          });
+        }
+        populateTable();
+      }
+
+      populateTable();
+    </script>
+  </body>
+
+  </html>
